@@ -26,29 +26,26 @@ public class PlayerController
     {
         Task.Run(() =>
         {
-            while (true)
+            while (!GameManager.GameOver)
             {
-                while (GameManager.GameOn)
+                switch (Console.ReadKey(false).Key)
                 {
-                    switch (Console.ReadKey(false).Key)
-                    {
-                        case UP:
-                            PlayerInputChanged?.Invoke(this, new PlayerInputEventArgs(PlayerDirection.UP));
-                            break;
-                        case DOWN:
-                            PlayerInputChanged?.Invoke(this, new PlayerInputEventArgs(PlayerDirection.DOWN));
-                            break;
-                        case LEFT:
-                            PlayerInputChanged?.Invoke(this, new PlayerInputEventArgs(PlayerDirection.LEFT));
-                            break;
-                        case RIGHT:
-                            PlayerInputChanged?.Invoke(this, new PlayerInputEventArgs(PlayerDirection.RIGHT));
-                            break;
-                    }
+                    case UP:
+                        PlayerInputChanged?.Invoke(this, new PlayerInputEventArgs(PlayerDirection.UP));
+                        break;
+                    case DOWN:
+                        PlayerInputChanged?.Invoke(this, new PlayerInputEventArgs(PlayerDirection.DOWN));
+                        break;
+                    case LEFT:
+                        PlayerInputChanged?.Invoke(this, new PlayerInputEventArgs(PlayerDirection.LEFT));
+                        break;
+                    case RIGHT:
+                        PlayerInputChanged?.Invoke(this, new PlayerInputEventArgs(PlayerDirection.RIGHT));
+                        break;
                 }
-
-                Task.Delay(5000);
             }
+
+            Task.Delay(5000);
             
         });
     }

@@ -16,7 +16,7 @@ public class FoodSpawner
     {
         Task.Run(async () =>
         {
-            while (GameManager.GameOn)
+            while (!GameManager.GameOver)
             {
                 char spawnChar = ' ';
                 int rngX = 0;
@@ -31,7 +31,7 @@ public class FoodSpawner
             
                 SpawnedFood.Add(new Food(false, new Vector2(rngX,rngY)));
                 OnSpawnFood?.Invoke(this, new SpawnPickupEventArgs(new Vector2(rngX,rngY)));
-                await Task.Delay(1000);
+                await Task.Delay(3000);
             }
 
         });

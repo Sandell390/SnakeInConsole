@@ -2,12 +2,39 @@
 
 using SnakeInConsole;
 
+Console.WriteLine("");
 Console.WriteLine("Snake By GommeS");
-Console.CursorVisible = false;
 
-GameManager game = new GameManager();
+MenuManager menuManager = new MenuManager();
+HighscoreManager highscoreManager = new HighscoreManager();
 
-while (GameManager.GameOn)
+while (true)
 {
-    // DO nothing
+    menuManager.StartMenu();
+    switch (menuManager.UserInput())
+    {
+        case 1:
+            Console.Clear();
+            GameManager game = new GameManager();
+
+            while (GameManager.GameOn)
+            {
+                // DO nothing
+            }
+            
+            
+            
+            break;
+        case 4:
+            menuManager.HighscoreMenu(highscoreManager.GetAllHighscores());
+            
+            break;
+        default:
+            menuManager.StartMenu();
+            break;
+    }
+
 }
+
+
+

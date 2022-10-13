@@ -1,9 +1,12 @@
-﻿namespace SnakeInConsole;
+﻿using System.Net.NetworkInformation;
+
+namespace SnakeInConsole;
 
 public class GameManager
 {
     public static bool GameOn { get; private set; } = false;
-    
+    public static bool GameOver { get; private set; } = false;
+
     private Player _player;
 
     private FoodSpawner _foodSpawner;
@@ -12,20 +15,35 @@ public class GameManager
     
     private Map map;
 
+    private TimeSpan _startRoundTime;
+    private TimeSpan _endRoundTime;
     
     
     public GameManager()
     {
+        GameOver = false;
         GameOn = true;
-        map = new Map(50 , 50);
+        map = new Map(20 , 20);
         _foodSpawner = new FoodSpawner();
         _foodSpawner.OnSpawnFood += FoodSpawnerOnOnSpawnFood;
         _player = new Player();
+        ShowBestHighscore();
         SpawnPlayer();
         Update();
         _foodSpawner.StartFoodSpawn(map);
     }
 
+    private void ShowBestHighscore()
+    {
+        HighscoreManager highscoreManager = new HighscoreManager();
+        List<Highscore> highscores = highscoreManager.GetAllHighscores();
+
+        if (highscores.Count <= 0)
+            return;
+        // Select the best highscore
+        Highscore bestHighscore = highscores.OrderByDescending(x => x.HighscoreAmout).FirstOrDefault();
+        Drawer.DrawHighscore(bestHighscore);
+    }
     private void FoodSpawnerOnOnSpawnFood(object? sender, SpawnPickupEventArgs e)
     {
         Drawer.Draw("@", e.Vector2.X, e.Vector2.Y);
@@ -41,10 +59,12 @@ public class GameManager
     {
         Task.Run(async () =>
         {
+            _startRoundTime = DateTime.Now.TimeOfDay;
             while (!playerDead)
             {
                 if (_player.TrailerManager.Trails.Count > 0)
                     Drawer.Draw(" ", _player.TrailerManager.Trails.Last().Vector2.X, _player.TrailerManager.Trails.Last().Vector2.Y);
+                
                 Drawer.Draw(" ", _player.Vector2.X, _player.Vector2.Y);
                 MovePlayer();
                 CheckCol();
@@ -52,9 +72,13 @@ public class GameManager
                 Drawer.Draw("O", _player.Vector2.X, _player.Vector2.Y);
                 if (_player.TrailerManager.Trails.Count > 0)
                     Drawer.Draw("+", _player.TrailerManager.Trails.First().Vector2.X,_player.TrailerManager.Trails.First().Vector2.Y);
-                await Task.Delay(100);
+                
+                await Task.Delay(300);
             }
-
+            GameOver = true;
+            _foodSpawner.OnSpawnFood -= FoodSpawnerOnOnSpawnFood;
+            _endRoundTime = DateTime.Now.TimeOfDay;
+            SaveScore();
             GameOn = false;
         });
     }
@@ -91,7 +115,20 @@ public class GameManager
             {
                 food.HasEat = true;
                 _player.TrailerManager.AddTrail(_player.Vector2.X, _player.Vector2.Y, _player.Direction);
+                Drawer.DrawPoint(_player.TrailerManager.Trails.Count);
             }
         });
+    }
+
+    void SaveScore()
+    {
+        Drawer.NewHighscore(_player.TrailerManager.Trails.Count, _endRoundTime.Subtract(_startRoundTime).Seconds, out Highscore highscore);
+        HighscoreManager highscoreManager = new HighscoreManager();
+        highscoreManager.SaveHighScore(highscore);
+    }
+
+    void Cleanup()
+    {
+        _player = null;
     }
 }

@@ -6,6 +6,9 @@ public class TrailerManager
 
     private readonly List<Trail> _oldTrailsPos;
 
+    private int oldPlayerX = -1;
+    private int oldPlayerY = -1;
+
     public TrailerManager()
     {
         Trails = new List<Trail>();
@@ -18,7 +21,6 @@ public class TrailerManager
         _oldTrailsPos.Add(new Trail(playerX, playerY, direction));
     }
 
-    // Trail update before Player Loc updates, kinda wack
     public void UpdateTrail(int playerX, int playerY, PlayerController.PlayerDirection direction)
     {
         for (int i = 0; i < Trails.Count; i++)
@@ -28,62 +30,11 @@ public class TrailerManager
             
             if (i == 0)
             {
-                switch (direction)
-                {
-                    case PlayerController.PlayerDirection.UP:
-                        if (Trails[i].Direction == PlayerController.PlayerDirection.LEFT)
-                        {
-                            Trails[i].Vector2.X -= 1;
-                        }else if (Trails[i].Direction == PlayerController.PlayerDirection.RIGHT)
-                        {
-                            Trails[i].Vector2.X += 1;
-                        }
-                        else
-                        {
-                            Trails[i].Vector2.Y = playerY + 1;
-                        }
-                        break;
-                    case PlayerController.PlayerDirection.DOWN:
-                        if (Trails[i].Direction == PlayerController.PlayerDirection.LEFT)
-                        {
-                            Trails[i].Vector2.X -= 1;
-                        }else if (Trails[i].Direction == PlayerController.PlayerDirection.RIGHT)
-                        {
-                            Trails[i].Vector2.X += 1;
-                        }
-                        else
-                        {
-                            Trails[i].Vector2.Y = playerY - 1;
-                        }
-                        break;
-                    case PlayerController.PlayerDirection.LEFT:
-                        if (Trails[i].Direction == PlayerController.PlayerDirection.UP)
-                        {
-                            Trails[i].Vector2.Y -= 1;
-                        }else if (Trails[i].Direction == PlayerController.PlayerDirection.DOWN)
-                        {
-                            Trails[i].Vector2.Y += 1;
-                        }
-                        else
-                        {
-                            Trails[i].Vector2.X = playerX + 1;
-                        }
-                        break;
-                    case PlayerController.PlayerDirection.RIGHT:
-                        if (Trails[i].Direction == PlayerController.PlayerDirection.UP)
-                        {
-                            Trails[i].Vector2.Y -= 1;
-                        }else if (Trails[i].Direction == PlayerController.PlayerDirection.DOWN)
-                        {
-                            Trails[i].Vector2.Y += 1;
-                        }
-                        else
-                        {
-                            Trails[i].Vector2.X = playerX - 1;
-                        }
-                        break;
-                }
-                Trails[i].Direction = direction;
+                Trails[i].Vector2.X = oldPlayerX;
+                Trails[i].Vector2.Y = oldPlayerY;
+                    
+                oldPlayerX = playerX;
+                oldPlayerY = playerY;
             }
             else
             {
