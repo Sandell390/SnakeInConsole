@@ -11,12 +11,12 @@ public class HighscoreManager
 
     public List<Highscore> GetAllHighscores()
     {
-        return _fileManager.GetAllHighScoreFile();
+        return _fileManager.GetListFromFile<Highscore>("highscore");
     }
 
 
     public void SaveHighScore(Highscore highscore)
     {
-        _fileManager.SaveHighcoreToFile(highscore);
+        _fileManager.SaveHighcoreToFile(highscore, "highscore");
     }
 }

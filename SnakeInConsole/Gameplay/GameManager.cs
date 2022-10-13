@@ -23,7 +23,7 @@ public class GameManager
     {
         GameOver = false;
         GameOn = true;
-        map = new Map(20 , 20);
+        map = new Map(20 , 20, false);
         _foodSpawner = new FoodSpawner();
         _foodSpawner.OnSpawnFood += FoodSpawnerOnOnSpawnFood;
         _player = new Player();
@@ -93,7 +93,7 @@ public class GameManager
     
     void CheckCol()
     {
-        if (map.MapArray[_player.Vector2.X,_player.Vector2.Y] != ' ')
+        if (map.MapArray[_player.Vector2.X,_player.Vector2.Y] != 0)
         {
             playerDead = true;
         }

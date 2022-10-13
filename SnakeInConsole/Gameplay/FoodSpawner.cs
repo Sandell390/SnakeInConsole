@@ -18,7 +18,7 @@ public class FoodSpawner
         {
             while (!GameManager.GameOver)
             {
-                char spawnChar = ' ';
+                int  spawnChar;
                 int rngX = 0;
                 int rngY = 0;
                 do
@@ -27,7 +27,7 @@ public class FoodSpawner
                     rngY = _random.Next(0, map.MapArray.GetLength(1));
 
                     spawnChar = map.MapArray[rngX, rngY];
-                } while (spawnChar != ' ');
+                } while (spawnChar != 0);
             
                 SpawnedFood.Add(new Food(false, new Vector2(rngX,rngY)));
                 OnSpawnFood?.Invoke(this, new SpawnPickupEventArgs(new Vector2(rngX,rngY)));

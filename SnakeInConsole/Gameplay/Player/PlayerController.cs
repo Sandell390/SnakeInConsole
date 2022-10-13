@@ -7,6 +7,8 @@ public class PlayerController
     public const ConsoleKey LEFT = ConsoleKey.A;
     public const ConsoleKey RIGHT = ConsoleKey.D;
 
+    private CancellationToken _cancellationToken;
+
     public enum PlayerDirection
     {
         UP = 0,
@@ -47,7 +49,8 @@ public class PlayerController
 
             Task.Delay(5000);
             
-        });
+        }, _cancellationToken);
+        
     }
     
     public static void ChooseDirection(PlayerController.PlayerDirection direction, int xIn, int yIn, out int xOut, out int yOut)

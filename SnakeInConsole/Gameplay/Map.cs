@@ -2,15 +2,22 @@
 
 public class Map
 {
-    public char[,] MapArray;
+    public int[,] MapArray;
 
-    public Map(int width, int heigth)
+    public Map(int width, int heigth, bool isCustom)
     {
-        MapArray = new char[width,heigth];
-        GenerateMap();
+        MapArray = new int[width,heigth];
+        if (isCustom)
+        {
+            
+        }
+        else
+        {
+            GenerateDefaultMap();
+        }
     }
 
-    void GenerateMap()
+    void GenerateDefaultMap()
     {
         for (int x = 0; x < MapArray.GetLength(0); x++)
         {
@@ -18,18 +25,18 @@ public class Map
             {
                 if (y == 0)
                 {
-                    MapArray[x, y] = '#';
+                    MapArray[x, y] = 1;
                 }else if (x == 0 || x == MapArray.GetLength(0) - 1)
                 {
-                    MapArray[x, y] = '#';
+                    MapArray[x, y] = 1;
 
                 }else if (y == MapArray.GetLength(1) - 1)
                 {
-                    MapArray[x, y] = '#';
+                    MapArray[x, y] = 1;
                 }
                 else
                 {
-                    MapArray[x, y] = ' ';
+                    MapArray[x, y] = 0;
                 }
             }
         }
@@ -38,7 +45,7 @@ public class Map
         {
             for (int j = 0; j < MapArray.GetLength(1); j++)
             {
-                Drawer.Draw(MapArray[i,j].ToString(), i , j);
+                Drawer.Draw(MapArray[i,j] == 1 ? "#" : " ", i , j);
             }
         }
     }

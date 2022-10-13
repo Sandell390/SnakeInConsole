@@ -2,6 +2,8 @@
 
 using SnakeInConsole;
 
+Console.Title = "Snake";
+
 Console.WriteLine("");
 Console.WriteLine("Snake By GommeS");
 

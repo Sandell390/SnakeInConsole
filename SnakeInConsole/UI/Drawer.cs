@@ -72,7 +72,7 @@ public static class Drawer
         Console.WriteLine("You got " + points + " points");
         Console.WriteLine("You survived for " + time + " seconds");
         Console.WriteLine();
-        Console.WriteLine("Enter your name: ");
+        Console.Write("Enter your name: ");
         string name = Console.ReadLine();
         newHighscore = new Highscore(points, time, name);
     }
